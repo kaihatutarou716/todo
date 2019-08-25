@@ -1,0 +1,186 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/jquery-ui-i18n.min.js"></script>
+    <script type="text/javascript" src="todo.js" charset="UTF-8"></script>
+    <title>todoリスト</title>
+  </head>
+  <link rel="stylesheet" type="text/css" href="todo.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+  <body>
+    <h1>todo list</h1>
+    <form name="inputForm" id="inputForm_id" action="">
+      <div class="taskTest">
+        <input type="text" id="item" placeholder="タスク内容を入力">
+      </div>
+
+      <div class="calendar">
+        <input type="text" id="datepicker" placeholder="期限を入力">
+      </div>
+      <div class="addButton">
+        <button type="submit" onClick="submitItem();">追加</button>
+      </div>
+    </form>
+
+    <div id="app">
+      <div id="div_memoArea" style="display:none;">
+        <textarea name="memoArea" id="memoArea_id" value="1" cols="60" rows=11></textarea>
+      </div>
+      <table id="dataTtable">
+        <thead v-pre>
+          <form name="Formtable" id="Formtable_id" action="">
+            <tr>
+              <th class="task"><button id="tskButton">
+                  <font size=4>タスク</font>
+                </button></th>
+              <th class="deadLine"><button id="dieButton">
+                  <font size=4>期限</font>
+                </button></th>
+              <th class="state"><button id="steButton">
+                  <font size=4>状態</font>
+                </button></th>
+              <th class="memo"><button id="btnMemo">
+                  <font size=4>メモ</font>
+                </button></th>
+              <th class="delBtn"><button id="btnButton">
+                  <font size=4>-</font>
+                </button></th>
+            </tr>
+          </form>
+        </thead>
+        <tbody>
+          <!--javaScript でリストを追加-->
+        </tbody>
+      </table>
+    </div>
+
+    <!--クラス定義-->
+    <script type="text/javascript">
+      function dataInfo(editFlg) {
+        this.setEditFlg(editFlg);
+      };
+      dataInfo.prototype = {
+        setEditFlg: function (editFlg) {
+          this._editFlg = editFlg;
+        },
+        getEditFlg: function () {
+          return this._editFlg;
+        }
+      };
+    </script>
+
+    <!--グローバル変数定義-->
+    <script type="text/javascript">
+      dataFileName = "data.json";
+    </script>
+
+    <!--カレンダー表示-->
+    <script type="text/javascript">
+      $(function () {
+        $.datepicker.setDefaults($.datepicker.regional['ja']);
+        $('#datepicker').datepicker();
+      });
+    </script>
+
+    <!--データ読み込む処理-->
+    <script type="text/javascript">
+      window.onload = onLoad;
+
+      function onLoad() {
+
+        /*指定したファイルが存在するかチェック
+          存在しない場合新規でファイルを作成*/
+        createJsonData();
+
+        var xmlhttp = createXMLHttpObject();
+        xmlhttp.onreadystatechange = function () {
+
+          //ステータスが4の場合、jsonデータを取得
+          if (xmlhttp.readyState == 4) {
+            var JsonData = JSON.parse(xmlhttp.responseText);
+            JsonData = sortJsonData(JsonData);
+
+            //動的テーブル作成
+            for (var j = 0; j < JsonData.data.length; j++) {
+
+              //Id
+              var dataId = document.createElement('input');
+              dataId.setAttribute('type', 'hidden');
+              dataId.setAttribute('id', 'dataId');
+              dataId.value = JsonData.data[j].id;
+              dataId.name = 'dataId';
+
+              //タスク
+              var dataTask = document.createElement('td');
+              dataTask.setAttribute('id', 'task');
+              dataTask.appendChild(document.createTextNode(JsonData.data[j].task));
+
+              //期限
+              var dataDeadLine = document.createElement('td');
+              dataDeadLine.setAttribute('id', 'deadLine');
+              dataDeadLine.appendChild(document.createTextNode(JsonData.data[j].deadLine));
+
+              //状態
+              var dState = "";
+              if (JsonData.data[j].state == 1) {
+                dState = "作業中";
+              } else if (JsonData.data[j].state == 2) {
+                dState = "完了";
+              }
+
+              var dataState = document.createElement('td');
+              dataState.setAttribute('class', 'state');
+              var stateButton = document.createElement('button');
+              stateButton.setAttribute('id', 'stateButton');
+              stateButton.value = JsonData.data[j].id;
+              stateButton.appendChild(document.createTextNode(dState));
+              var span = document.createElement('span');
+              span.setAttribute('id', 'span');
+              stateButton.appendChild(span);
+              dataState.appendChild(stateButton);
+
+              //メモボタン
+              var btnMemo = document.createElement('td');
+              btnMemo.setAttribute('class', 'btnMemo');
+              var memoButton = document.createElement('button');
+              memoButton.setAttribute('id', 'memoButton');
+              memoButton.value = JsonData.data[j].id;
+              memoButton.appendChild(document.createTextNode('メモ'));
+              btnMemo.appendChild(memoButton);
+
+              //削除ボタン
+              var tdButton = document.createElement('td');
+              tdButton.setAttribute('class', 'button');
+              var deleteButton = document.createElement('button');
+              deleteButton.setAttribute('id', 'deleteButton');
+              deleteButton.value = JsonData.data[j].id;
+              deleteButton.appendChild(document.createTextNode('削除'));
+              tdButton.appendChild(deleteButton);
+
+              //trに追加
+              var tr = document.createElement('tr');
+              tr.appendChild(dataId);
+              tr.appendChild(dataTask);
+              tr.appendChild(dataDeadLine);
+              tr.appendChild(dataState);
+              tr.appendChild(btnMemo);
+              tr.appendChild(tdButton);
+
+              document.getElementsByTagName('tbody')[0].appendChild(tr);
+            }
+          }
+        }
+        xmlhttp.open("GET", dataFileName);
+        xmlhttp.send();
+      }
+    </script>
+  </body>
+
+  </html>

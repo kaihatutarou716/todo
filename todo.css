@@ -1,0 +1,161 @@
+.taskTest {
+  margin: 0 auto;
+  width: 650.16px;
+}
+
+.taskTest input[type="text"] {
+  font: 15px/24px sans-serif;
+  box-sizing: border-box;
+  width: 650.16px;
+  padding: 0.3em;
+  transition: 0.3s;
+  letter-spacing: 1px;
+  border: 1px solid #1b2538;
+  border-radius: 4px;
+  margin: 3px;
+}
+
+.calendar {
+  margin: 0 auto;
+  width: 650.16px;
+}
+
+.calendar input[type="text"] {
+  font: 15px/24px sans-serif;
+  box-sizing: border-box;
+  width: 150.16px;
+  padding: 0.3em;
+  transition: 0.3s;
+  letter-spacing: 1px;
+  border: 1px solid #1b2538;
+  border-radius: 4px;
+  margin: 3px;
+}
+
+tbody button {
+  border: none;
+  border-radius: 20px;
+  line-height: 24px;
+  padding: 0 8px;
+  background: #93ffab;
+  color: #000000;
+  cursor: pointer;
+  width: 70px;
+  height: 35px;
+}
+
+.addButton button {
+  border: none;
+  border-radius: 20px;
+  line-height: 24px;
+  padding: 0 8px;
+  background: #93ffab;
+  color: #000000;
+  cursor: pointer;
+  width: 70px;
+  height: 35px;
+}
+
+.addButton {
+  position: absolute;
+  margin-top: -70px;
+  left: 50%;
+  width: 500px;
+  margin-left: 340px;
+}
+
+thead th button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+  color: #0099e4;
+}
+
+/* 入力ダイヤログのCSS
+ backgroundを先にcssを適用する必要がある
+ colorが先の場合、backgroundが適用されない
+ */
+
+.memoAreaTitle .ui-dialog-titlebar {
+  background: #93ffab;
+  color: #000000;
+}
+
+.memoAreaTitle .maBtnOk {
+  background: #93ffab;
+  color: #000000;
+}
+
+.memoAreaTitle .maBtnNg {
+  background: #93ffab;
+  color: #000000;
+}
+
+/*Elementに対してのCSS*/
+
+h1 {
+  background: #c2edff;
+  padding: 0.5em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  border-bottom: 2px solid #0099e4;
+  color: #0099e4;
+}
+
+th,
+th {
+  padding: 0 8px;
+  line-height: 40px;
+}
+
+thead th.task {
+  width: 400px;
+}
+
+thead th.state {
+  width: 100px;
+}
+
+thead th.button {
+  width: 60px;
+}
+
+tbody td.button,
+tbody td.state {
+  text-align: center;
+}
+
+tbody tr td,
+tbody tr th {
+  border-bottom: 1px solid #ccc;
+  transition: all 0.4s;
+}
+
+tbody tr.done td,
+tbody tr.done th {
+  background: #93ffab;
+  color: #bbb;
+}
+
+tbody tr:hover td,
+tbody tr:hover th {
+  background: #f4fbff;
+}
